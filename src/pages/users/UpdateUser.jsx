@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react'
 
-import Form from "../../components/form/Form";
-import FormInput from "../../components/form/form_input/FormInput";
 import Button from "../../components/button/Button";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import axios from "axios";
 
 const UpdateUser = (props) => {
-    const initUserSate = {
-        id: null, username: '', first_name: '', last_name: '', email: '', phone: '', gender: ''
+    let initUserSate = {
+        id: null, username: '', first_name: '', last_name: '', email: '', phone: '', gender: '', photo: ''
     }
     const update_url = `${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`
     const {
@@ -19,11 +17,17 @@ const UpdateUser = (props) => {
     } = useForm();
     const history = useHistory()
     let [user, setUser] = useState(initUserSate)
+    let [photo, setPhoto] = useState()
+    const handleChangeImage = e => {
+        setPhoto(URL.createObjectURL(e.target.files[0]))
+        console.log(photo)
+    }
     useEffect(() => {
         axios.get(update_url).then((response) => {
-            setUser(response.data);
+            setUser(response.data)
         })
-    }, [])
+    }, [update_url])
+    console.log(user)
 
     const onSubmit = async (data) => {
         console.log(data)
@@ -102,12 +106,15 @@ const UpdateUser = (props) => {
                                     <div className="row">
 
 
-                                        {/*<div className="col-6">*/}
-                                        {/*    <p className={'text-danger'}> {errors.photo && errors.photo.message ? errors.photo.message : null}</p>*/}
-                                        {/*    <label htmlFor={'photo'}> Photo </label>*/}
-                                        {/*    <input className={'form-control'} type="file"*/}
-                                        {/*           id={'photo'} {...register("photo", {required: "Photo is required.",})}/>*/}
-                                        {/*</div>*/}
+                                        <div className="col-6">
+                                            <label htmlFor={'photo'}> Photo </label>
+                                            <input className={'form-control'} type="file" onChange={handleChangeImage}
+                                                   id={'photo'} {...register("photo", {required: "Photo is required.",})}/>
+                                            <p className={'text-danger'}> {errors.photo && errors.photo.message ? errors.photo.message : null}</p>
+                                        </div>
+                                        <div className="col-6">
+                                            <img src={photo} alt={user.username} className={'img-thumbnail'}/>
+                                        </div>
                                     </div>
 
                                     <Button type={'submit'} color={'primary float-right mt-3'}

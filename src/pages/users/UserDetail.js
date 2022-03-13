@@ -9,11 +9,11 @@ const UserDetail = (props) => {
     let {user, setUser} = useState(initUserSate)
 
     useEffect(() => {
-        axios.get(`/user/${props.match.params.id}/`).then((response) => {
+        axios.get(`${process.env.REACT_APP_API_ROOT_V1}/user/${props.match.params.id}`).then((response) => {
             setUser(response.data)
         })
         console.log(user)
-    }, [])
+    }, [props.match.params.id, setUser, user])
 
     return (
         <div>

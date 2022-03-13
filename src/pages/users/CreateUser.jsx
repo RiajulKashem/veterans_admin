@@ -13,14 +13,21 @@ const CreateUser = () => {
     } = useForm();
 
     const history = useHistory()
+    let formData = new FormData()
 
 
     const onSubmit = async (data) => {
-        console.log(data)
+        formData.append('first_name', data.first_name)
+        formData.append('last_name', data.last_name)
+        formData.append('username', data.username)
+        formData.append('password', data.password)
+        formData.append('email', data.email)
+        formData.append('phone', data.phone)
+        formData.append('gender', data.gender)
+        formData.append('photo', data.photo[0])
         try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_ROOT_V1}user/`,
-                data,);
+            console.log()
+            const response = await axios.post(`${process.env.REACT_APP_API_ROOT_V1}user/`, formData);
             console.log(response);
             history.push(`/users/`)
         } catch (error) {
@@ -97,12 +104,12 @@ const CreateUser = () => {
                                             <p className={'text-danger'}> {errors.gender && errors.gender.message ? errors.gender.message : null}</p>
                                         </div>
 
-                                        {/*<div className="col-6">*/}
-                                        {/*    <p className={'text-danger'}> {errors.photo && errors.photo.message ? errors.photo.message : null}</p>*/}
-                                        {/*    <label htmlFor={'photo'}> Photo </label>*/}
-                                        {/*    <input className={'form-control'} type="file"*/}
-                                        {/*           id={'photo'} {...register("photo", {required: "Photo is required.",})}/>*/}
-                                        {/*</div>*/}
+                                        <div className="col-6">
+                                            <p className={'text-danger'}> {errors.photo && errors.photo.message ? errors.photo.message : null}</p>
+                                            <label htmlFor={'photo'}> Photo </label>
+                                            <input className={'form-control'} type="file"
+                                                   id={'photo'} {...register("photo", {required: "Photo is required.",})}/>
+                                        </div>
                                     </div>
 
                                     <Button type={'submit'} color={'primary float-right mt-3'}

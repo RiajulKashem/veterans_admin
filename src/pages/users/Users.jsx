@@ -49,6 +49,9 @@ const renderBody = (item, index) => (
                 <IconButton type={'warning'} icon_class={'bx-edit'}/>
             </Link>
             <IconButton type={'danger'} icon_class={'bx-trash'} onClick={display_alert}/>
+            <Link>
+
+            </Link>
             <IconButton type={'success'} icon_class={'bx-detail'} onClick={display_alert}/>
         </td>
     </tr>
