@@ -9,7 +9,6 @@ const UpdateUser = (props) => {
     let initUserSate = {
         id: null, username: '', first_name: '', last_name: '', email: '', phone: '', gender: '', photo: ''
     }
-    const update_url = `${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`
     const {
         handleSubmit,
         register,
@@ -23,17 +22,16 @@ const UpdateUser = (props) => {
         console.log(photo)
     }
     useEffect(() => {
-        axios.get(update_url).then((response) => {
-            setUser(response.data)
-        })
-    }, [update_url])
+        axios.get(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`)
+            .then((response) => { setUser(response.data)})
+    }, [])
     console.log(user)
 
     const onSubmit = async (data) => {
         console.log(data)
         try {
             const response = await axios.put(
-                update_url,
+                `${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`,
                 data,);
             console.log(response);
             history.push(`/users/`)
