@@ -6,20 +6,19 @@ const UserDetail = (props) => {
     const initUserSate = {
         id: null, username: '', first_name: '', last_name: '', email: '', phone: '', gender: '', photo: null
     }
-    let {user, setUser} = useState(initUserSate)
+    const [user, setUser] = useState(initUserSate)
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_ROOT_V1}/user/${props.match.params.id}`).then((response) => {
+        axios.get(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}`).then((response) => {
             setUser(response.data)
         })
-        console.log(user)
-    }, [props.match.params.id, setUser, user])
+    }, [ ])
 
     return (
         <div>
             <div className="row">
                 <div className="col-10">
-                    <h2 className="page-header">User Detail</h2>
+                    <h2 className="page-header">User Profile</h2>
                 </div>
             </div>
             <div className="row">
@@ -31,12 +30,12 @@ const UserDetail = (props) => {
                                     <div className="row">
                                         <div className="col-lg-4 col-md-5 xs-margin-30px-bottom">
                                             <div className="team-single-img">
-                                                <img src={'user.photo'}/>
+                                                <img src={user?.photo}/>
                                             </div>
                                             <div
                                                 className="bg-light-gray padding-30px-all md-padding-25px-all sm-padding-20px-all text-center">
                                                 <h4 className="margin-10px-bottom font-size24 md-font-size22 sm-font-size20 font-weight-600">
-                                                    Full Name
+                                                    {user?.first_name} {user?.last_name}
                                                 </h4>
                                                 <p className="sm-width-95 sm-margin-auto">
 
@@ -70,17 +69,14 @@ const UserDetail = (props) => {
 
                                         <div className="col-lg-8 col-md-7">
                                             <div className="team-single-text padding-50px-left sm-no-padding-left">
-                                                <h4 className="font-size38 sm-font-size32 xs-font-size30">Buckle
-                                                    Giarza</h4>
-                                                <p className="no-margin-bottom">Excepteur sint occaecat cupidatat
-                                                    non proident, sunt in culpa qui officia deserunt mollit anim id
-                                                    est laborum. Sed ut perspiciatis unde omnis iste natus error sit
-                                                    voluptatem accusantium doloremque laudantium, totam rem aperiam,
-                                                    eaque ipsa quae ab illo inventore veritatis et quasi architecto
-                                                    beatae vitae dicta sunt explicabo. aut odit aut fugit, sed quia
-                                                    consequuntur magni dolores eos qui ratione voluptatem sequi
-                                                    nesciunt. Neque porro quisquam est, qui dolorem ipsum
-                                                    voluptatem.</p>
+                                                <h4 className="font-size20 sm-font-size32 xs-font-size30">
+                                                    Software Engineer
+                                                </h4>
+                                                <p className="no-margin-bottom">
+                                                    I am very interested to work as a Software Engineer in a Company where robust problem-solving skills
+                                                    required, following software engineering best practices and culture and provides potential avenues for
+                                                    learning, growing and achieving the top level in the hierarchy of the organization
+                                                </p>
                                                 <div className="contact-info-section margin-40px-tb">
                                                     <ul className="list-style9 no-margin">
                                                         <li>

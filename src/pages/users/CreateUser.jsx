@@ -24,7 +24,7 @@ const CreateUser = () => {
         formData.append('email', data.email)
         formData.append('phone', data.phone)
         formData.append('gender', data.gender)
-        formData.append('photo', data.photo[0])
+        if (data.photo) formData.append('photo', data.photo[0])
         try {
             console.log()
             const response = await axios.post(`${process.env.REACT_APP_API_ROOT_V1}user/`, formData);
