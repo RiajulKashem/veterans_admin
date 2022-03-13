@@ -1,6 +1,5 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { FormContext } from '../Form';
-import './FormInput.css';
 
 function FormInput(props) {
   const {
@@ -21,6 +20,11 @@ function FormInput(props) {
         value={form[name]}
         onChange={handleFormChange}
       />
+
+
+        {/*<p className={'text-danger'}> {errors.gender && errors.gender.message ? errors.gender.message : null}</p>*/}
+        {/*<label htmlFor="gender"> Gender </label>*/}
+        {/*<input type="text" id={'gender'} {...register("gender", { required: "Gender is required.",})} />*/}
     </div>
   )
 }

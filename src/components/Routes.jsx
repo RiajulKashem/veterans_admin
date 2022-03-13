@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard'
 import Users from '../pages/users/Users'
 import CreateUser from "../pages/users/CreateUser";
 import UpdateUser from "../pages/users/UpdateUser";
+import UserDetail from '../pages/users/UserDetail'
 
 const Routes = () => {
     return (
@@ -14,6 +15,7 @@ const Routes = () => {
             <Route path='/users' exact component={Users}/>
             <Route path='/users/create' component={CreateUser}/>
             <Route path='/users/:id/update' component={UpdateUser}/>
+            <Route path='/users/:id/detail' component={UserDetail}/>
         </Switch>
     )
 }

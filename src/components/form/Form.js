@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Form.css';
 import Button from "../button/Button";
 
 export const FormContext = React.createContext({

@@ -8,9 +8,6 @@ import IconButton from "../../components/button/IconButton";
 import {Link} from "react-router-dom";
 import axios from "axios";
 
-let base_url = process.env.REACT_APP_API_ROOT_V1
-console.log('base_url = ', base_url)
-
 const userTableHead = [
     'id',
     'first_name',
@@ -38,9 +35,15 @@ const renderBody = (item, index) => (
         <td>{item.username}</td>
         <td>{item.phone}</td>
         <td>{item.gender}</td>
-        <td>{item.is_superuser}</td>
-        <td>{item.is_staff}</td>
-        <td><Badge type={'success' ? item.is_active : 'danger'} content={String(item.is_active)}/></td>
+        <td>
+            <Badge type={item.is_superuser ? 'success' : 'danger'} content={item.is_superuser ? 'Yes' : 'No'}/>
+        </td>
+        <td>
+            <Badge type={item.is_staff ? 'success' : 'danger'} content={item.is_staff ? 'Yes' : 'No'}/>
+        </td>
+        <td>
+            <Badge type={item.is_active ? 'success' : 'danger'} content={item.is_active ? 'Active' : 'Not Active'}/>
+        </td>
         <td>
             <Link to={`/users/${item.id}/update`}>
                 <IconButton type={'warning'} icon_class={'bx-edit'}/>
