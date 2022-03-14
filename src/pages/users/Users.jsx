@@ -89,12 +89,12 @@ const Users = () => {
             <td>
                 <Badge type={item.is_active ? 'success' : 'danger'} content={item.is_active ? 'Active' : 'Not Active'}/>
             </td>
-            <td>
+            <td className={'d-flex'}>
                 <Link to={`/users/${item.id}/update`}>
                     <IconButton type={'warning'} icon_class={'bx-edit'}/>
                 </Link>
                 <IconButton type={'danger'} icon_class={'bx-trash'} onClick={() => delete_user(item.id)}/>
-                <Link to={`/users/${item.id}/profile `}>
+                <Link to={`/users/${item.id}/profile  `}>
                     <IconButton type={'success'} icon_class={'bx-detail'}/>
                 </Link>
             </td>

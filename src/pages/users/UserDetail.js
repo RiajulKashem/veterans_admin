@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './UserDetail.css'
 import axios from "axios";
+
 const UserDetail = (props) => {
     const initUserSate = {
         "id": null,
@@ -81,7 +82,7 @@ const UserDetail = (props) => {
                                                     {user.full_name}
                                                 </h4>
                                                 <p className="sm-width-95 sm-margin-auto">
-
+                                                    {user.employee.designation}
                                                 </p>
                                                 <div className="margin-20px-top team-single-icons">
                                                     <ul className="no-margin">
@@ -108,12 +109,38 @@ const UserDetail = (props) => {
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div className="bg-light-gray mt-4 p-3">
+                                                    <h5>Jobs Applied</h5>
+                                                <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                    MC Solution Looking for Python Dev <span className="badge badge-success float-right">Short Listed</span>
+                                                </a>
+                                                <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                    Sapience Trio Looking For Frontend Dev <span className="badge badge-primary float-right">reviewed</span>
+                                                </a>
+                                                <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                    F&R Looking for Senior Developer <span className="badge badge-danger float-right">rejected</span>
+                                                </a>
+                                            </div>
+                                            <div className="bg-light-gray mt-4 p-3">
+                                                <h5>All CV </h5>
+                                                <div className="list-group w-100">
+                                                    <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                        Python Developer resume  <span className="badge badge-secondary float-right">12 <i className="fa fa-eye" /></span>
+                                                    </a>
+                                                    <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                        Software Engineer resume  <span className="badge badge-secondary float-right">34 <i className="fa fa-eye" /></span>
+                                                    </a>
+                                                    <a href="#" className="list-group-item list-group-item-action  border-0">
+                                                        React Developer resume  <span className="badge badge-secondary float-right">0 <i className="fa fa-eye" /></span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className="col-lg-8 col-md-7">
                                             <div className="team-single-text padding-50px-left sm-no-padding-left">
                                                 <h4 className="font-size20 sm-font-size32 xs-font-size30">
-                                                    {user.employee.designation}
+                                                    Career Objective
                                                 </h4>
                                                 <p className="no-margin-bottom">
                                                     {user.employee.cv.career_objective}
@@ -130,9 +157,11 @@ const UserDetail = (props) => {
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
                                                                     {user.employee.educations.map((degree) => {
-                                                                        return <p key={degree.id}> {degree.education_level}
-                                                                            <span className="badge badge-success ml-3">{degree.result}</span>
-                                                                        </p>
+                                                                        return <div key={degree.id}>
+                                                                            <p> {degree.education_level}
+                                                                                <span className="badge badge-success ml-3">{degree.result}</span>
+                                                                            </p>
+                                                                        </div>
                                                                     })}
                                                                 </div>
                                                             </div>
@@ -171,7 +200,7 @@ const UserDetail = (props) => {
                                                                         className="ml-1">Training:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
-                                                                    <p>{user.employee.trainings.map(e=>{
+                                                                    {user.employee.trainings.map(e=>{
                                                                         return <div key={e.id} className={'border-bottom'}>
                                                                              <p className={'lead'}>
                                                                                   {e.name}
@@ -182,7 +211,7 @@ const UserDetail = (props) => {
                                                                             <p>Organization: {e.organization}</p>
                                                                             <p>Certificate : {e.certificate}</p>
                                                                         </div>
-                                                                    })}</p>
+                                                                    })}
                                                                 </div>
                                                             </div>
 
