@@ -7,6 +7,7 @@ import Button from "../../components/button/Button";
 import IconButton from "../../components/button/IconButton";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const userTableHead = [
     'id',
@@ -21,40 +22,9 @@ const userTableHead = [
     'is_active',
     'action'
 ]
-// console.log(userList)
 const renderHead = (item, index) => <th key={index}>{item}</th>
-let display_alert = () => {
-    window.alert('You Clicked Button')
-}
-const renderBody = (item, index) => (
-    <tr key={index}>
-        <td>{item.id}</td>
-        <td>{item.first_name}</td>
-        <td>{item.last_name}</td>
-        <td>{item.email}</td>
-        <td>{item.username}</td>
-        <td>{item.phone}</td>
-        <td>{item.gender}</td>
-        <td>
-            <Badge type={item.is_superuser ? 'success' : 'danger'} content={item.is_superuser ? 'Yes' : 'No'}/>
-        </td>
-        <td>
-            <Badge type={item.is_staff ? 'success' : 'danger'} content={item.is_staff ? 'Yes' : 'No'}/>
-        </td>
-        <td>
-            <Badge type={item.is_active ? 'success' : 'danger'} content={item.is_active ? 'Active' : 'Not Active'}/>
-        </td>
-        <td>
-            <Link to={`/users/${item.id}/update`}>
-                <IconButton type={'warning'} icon_class={'bx-edit'}/>
-            </Link>
-            <IconButton type={'danger'} icon_class={'bx-trash'} onClick={display_alert}/>
-            <Link to={`/users/${item.id}/detail `}>
-                <IconButton type={'success'} icon_class={'bx-detail'}/>
-            </Link>
-        </td>
-    </tr>
-)
+
+
 
 const Users = () => {
     const [userList, setState] = useState([])
@@ -64,9 +34,72 @@ const Users = () => {
                 setState(response.data);
             })
     }, [])
+    const delete_user = (id) => {
+        Swal.fire({
+            title: 'Are you sure you want to delete this?',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`${process.env.REACT_APP_API_ROOT_V1}user/${id}/`).then(() => {
+                        Swal.fire(
+                            'Delete!',
+                            'Deleted successfully',
+                            'success'
+                        ).then(() => {
+                            axios.get(`/user/`)
+                                .then((response) => {
+                                    setState(response.data);
+                                })
+                        })
+                    })
 
-    console.log("here")
-    console.log(userList)
+                } catch (error) {
+                    if (error) {
+                        let message = ''
+                        let keys = Object.keys(error.response.data)
+                        for (let i = 0; i < keys.length; i++) message += `${error.response.data[keys[i]][0]}<br>`
+                        await Swal.fire(
+                            'Error',
+                            message,
+                            'error'
+                        )
+                    }
+
+                }
+            }
+        })
+    }
+    const renderBody = (item, index) => (
+        <tr key={index}>
+            <td>{item.id}</td>
+            <td>{item.first_name}</td>
+            <td>{item.last_name}</td>
+            <td>{item.email}</td>
+            <td>{item.username}</td>
+            <td>{item.phone}</td>
+            <td>{item.gender}</td>
+            <td>
+                <Badge type={item.is_superuser ? 'success' : 'danger'} content={item.is_superuser ? 'Yes' : 'No'}/>
+            </td>
+            <td>
+                <Badge type={item.is_staff ? 'success' : 'danger'} content={item.is_staff ? 'Yes' : 'No'}/>
+            </td>
+            <td>
+                <Badge type={item.is_active ? 'success' : 'danger'} content={item.is_active ? 'Active' : 'Not Active'}/>
+            </td>
+            <td>
+                <Link to={`/users/${item.id}/update`}>
+                    <IconButton type={'warning'} icon_class={'bx-edit'}/>
+                </Link>
+                <IconButton type={'danger'} icon_class={'bx-trash'} onClick={() => delete_user(item.id)}/>
+                <Link to={`/users/${item.id}/detail `}>
+                    <IconButton type={'success'} icon_class={'bx-detail'}/>
+                </Link>
+            </td>
+        </tr>
+    )
     if (!userList) return <p>Loading User List...</p>
     else return (
         <div>

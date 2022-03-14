@@ -30,7 +30,7 @@ const UserDetail = (props) => {
                                     <div className="row">
                                         <div className="col-lg-4 col-md-5 xs-margin-30px-bottom">
                                             <div className="team-single-img">
-                                                <img src={user?.photo}/>
+                                                <img src={user?.photo} alt={user?.username}/>
                                             </div>
                                             <div
                                                 className="bg-light-gray padding-30px-all md-padding-25px-all sm-padding-20px-all text-center">
@@ -157,18 +157,17 @@ const UserDetail = (props) => {
                                                                         className="margin-10px-left xs-margin-four-left text-pink">Email:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
-                                                                    <p><a
-                                                                        href="javascript:void(0)">addyour@emailhere</a>
+                                                                    <p>
+                                                                        <a href="javascript:void(0)">addyour@emailhere</a>
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </li>
                                                     </ul>
                                                 </div>
-
-                                                <h5 className="font-size24 sm-font-size22 xs-font-size20">Professional
-                                                    Skills</h5>
-
+                                                <h5 className="font-size24 sm-font-size22 xs-font-size20">
+                                                    Professional Skills
+                                                </h5>
                                                 <div className="sm-no-margin">
                                                     <div className="progress-text">
                                                         <div className="row">

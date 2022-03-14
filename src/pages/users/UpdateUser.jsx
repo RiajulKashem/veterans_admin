@@ -4,6 +4,7 @@ import Button from "../../components/button/Button";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const UpdateUser = (props) => {
     const {
@@ -11,9 +12,11 @@ const UpdateUser = (props) => {
         register,
         formState: {errors},
         reset,
-    } = useForm({defaultValues: {
+    } = useForm({
+        defaultValues: {
             username: '', first_name: '', last_name: '', email: '', phone: '', gender: ''
-        }});
+        }
+    });
     const history = useHistory();
     const formData = new FormData();
 
@@ -42,14 +45,30 @@ const UpdateUser = (props) => {
         formData.append('phone', data.phone)
         formData.append('gender', data.gender)
         if (photo !== data.photo) formData.append('photo', photo)
-        console.log(data)
         try {
-            const response = await axios.put(
-                `${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`, formData);
-            console.log(response);
-            history.push(`/users/`);
+            await axios.put(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`, formData).then(() => {
+                Swal.fire(
+                    'Success!',
+                    'User updated successfully',
+                    'success'
+                ).then(() => {
+                    history.push(`/users/`)
+                })
+            })
+
         } catch (error) {
-            if (error) console.log(error.response.data);
+            if (error) {
+                console.log(error.response.data);
+                let message = ''
+                let keys = Object.keys(error.response.data)
+                for (let i = 0; i < keys.length; i++) message += `${error.response.data[keys[i]][0]}<br>`
+                await Swal.fire(
+                    'Error',
+                    message,
+                    'error'
+                )
+            }
+
         }
     };
     return (
@@ -88,20 +107,12 @@ const UpdateUser = (props) => {
                                         </div>
                                         <div className="col-6">
                                             <label htmlFor="gender"> Gender </label>
-                                            <input
-                                                className={"form-control"}
-                                                type="text"
-                                                id={"gender"}
-                                                {...register("gender", {
-                                                    required: "Gender is required.",
-                                                })}
-                                            />
-                                            <p className={"text-danger"}>
-                                                {" "}
-                                                {errors.gender && errors.gender.message
-                                                    ? errors.gender.message
-                                                    : null}
-                                            </p>
+                                            <select className={'form-control'} name="gender"
+                                                    id="gender" {...register("gender", {required: "Gender is required.",})}>
+                                                <option value="F">Female</option>
+                                                <option value="M">Male</option>
+                                            </select>
+                                            <p className={'text-danger'}> {errors.gender && errors.gender.message ? errors.gender.message : null}</p>
                                         </div>
                                     </div>
 
@@ -193,7 +204,7 @@ const UpdateUser = (props) => {
                                             />
                                         </div>
                                         <div className="col-6">
-                                            <img src={photo} className={"img-thumbnail"} />
+                                            <img src={photo} className={"img-thumbnail"} alt={'Thumbnail'}/>
                                         </div>
                                     </div>
 

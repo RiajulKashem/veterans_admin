@@ -1,6 +1,8 @@
 import React from "react";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import Swal from 'sweetalert2'
+
 import Button from "../../components/button/Button";
 import {useHistory} from "react-router-dom";
 
@@ -26,12 +28,29 @@ const CreateUser = () => {
         formData.append('gender', data.gender)
         if (data.photo) formData.append('photo', data.photo[0])
         try {
-            console.log()
-            const response = await axios.post(`${process.env.REACT_APP_API_ROOT_V1}user/`, formData);
-            console.log(response);
-            history.push(`/users/`)
+            await axios.post(`${process.env.REACT_APP_API_ROOT_V1}user/`, formData).then(() => {
+                Swal.fire(
+                    'Success!',
+                    'User created successfully',
+                    'success'
+                ).then(() => {
+                    history.push(`/users/`)
+                })
+            })
+
         } catch (error) {
-            if (error) console.log(error.response.data);
+            if (error) {
+                console.log(error.response.data);
+                let message = ''
+                let keys = Object.keys(error.response.data)
+                for (let i = 0; i < keys.length; i++) message += `${error.response.data[keys[i]][0]}<br>`
+                Swal.fire(
+                    'Error',
+                    message,
+                    'error'
+                )
+            }
+
         }
     };
 
@@ -99,8 +118,11 @@ const CreateUser = () => {
                                     <div className="row">
                                         <div className="col-6">
                                             <label htmlFor="gender"> Gender </label>
-                                            <input className={'form-control'} type="text"
-                                                   id={'gender'} {...register("gender", {required: "Gender is required.",})} />
+                                            <select className={'form-control'} name="gender"
+                                                    id="gender" {...register("gender", {required: "Gender is required.",})}>
+                                                <option value="F">Female</option>
+                                                <option value="M">Male</option>
+                                            </select>
                                             <p className={'text-danger'}> {errors.gender && errors.gender.message ? errors.gender.message : null}</p>
                                         </div>
 
