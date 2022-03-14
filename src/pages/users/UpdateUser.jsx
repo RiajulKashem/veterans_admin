@@ -21,11 +21,9 @@ const UpdateUser = (props) => {
     const formData = new FormData();
 
     let [photo, setPhoto] = useState();
-    // const handleChange = event => {
-    //     setUser({[event.target.name]: event.target.value});
-    // };
     const handleChangeImage = (e) => {
-        setPhoto(URL.createObjectURL(e.target.files[0]));
+        if (e.target.files.length !== 0) setPhoto(window.URL.createObjectURL(e.target.files[0]));
+        console.log(e.target.files);
         console.log(photo);
     };
     useEffect(() => {
@@ -35,16 +33,17 @@ const UpdateUser = (props) => {
                 reset(response.data)
                 setPhoto(response.data.photo)
             });
-    }, [reset]);
+    }, [reset, props.match.params.id]);
 
     const onSubmit = async (data) => {
+        console.log(data , ' photo ', photo)
         formData.append('first_name', data.first_name)
         formData.append('last_name', data.last_name)
         formData.append('username', data.username)
         formData.append('email', data.email)
         formData.append('phone', data.phone)
         formData.append('gender', data.gender)
-        if (photo !== data.photo) formData.append('photo', photo)
+        if (data.photo) formData.append('photo', data.photo[0])
         try {
             await axios.put(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`, formData).then(() => {
                 Swal.fire(
@@ -198,7 +197,12 @@ const UpdateUser = (props) => {
                                             <input
                                                 className={"form-control"}
                                                 type="file"
-                                                onChange={handleChangeImage}
+                                                onChange={(event)=> {
+                                                    handleChangeImage(event)
+                                                }}
+                                                onClick={(event)=> {
+                                                    event.target.value = null
+                                                }}
                                                 id={"photo"}
                                                 {...register("photo")}
                                             />

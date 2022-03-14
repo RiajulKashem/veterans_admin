@@ -94,7 +94,7 @@ const Users = () => {
                     <IconButton type={'warning'} icon_class={'bx-edit'}/>
                 </Link>
                 <IconButton type={'danger'} icon_class={'bx-trash'} onClick={() => delete_user(item.id)}/>
-                <Link to={`/users/${item.id}/detail `}>
+                <Link to={`/users/${item.id}/profile `}>
                     <IconButton type={'success'} icon_class={'bx-detail'}/>
                 </Link>
             </td>

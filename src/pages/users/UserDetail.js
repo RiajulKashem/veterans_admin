@@ -1,18 +1,61 @@
 import React, {useEffect, useState} from "react";
 import './UserDetail.css'
 import axios from "axios";
-
 const UserDetail = (props) => {
     const initUserSate = {
-        id: null, username: '', first_name: '', last_name: '', email: '', phone: '', gender: '', photo: null
+        "id": null,
+        "last_login": null,
+        "is_superuser": false,
+        "phone": "",
+        "username": "",
+        "email": "",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": null,
+        "is_active": null,
+        "gender": "",
+        "photo": null,
+        "groups": [],
+        "user_permissions": [],
+        "full_name": "",
+        "employee": {
+            "id": null,
+            "designation": "",
+            "company": "",
+            "address": {
+                "id": null,
+                "house_no": "",
+                "street_name": "",
+                "care_of": "",
+                "village": "",
+                "division": "",
+                "district": "",
+                "upazila": "",
+                "post_code": ""
+            },
+            "educations": [],
+            "experience": [],
+            "trainings": [],
+            "cv": {
+                "id": null,
+                "cv": null,
+                "career_objective": "",
+                "designation": "",
+                "social_links": null,
+            },
+            "special_activities": [],
+            "award": [],
+            "armsservices": [],
+            "skills": []
+        }
     }
     const [user, setUser] = useState(initUserSate)
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}`).then((response) => {
+        axios.get(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/profile/`).then((response) => {
             setUser(response.data)
         })
-    }, [ ])
+    }, [props.match.params.id])
 
     return (
         <div>
@@ -30,12 +73,12 @@ const UserDetail = (props) => {
                                     <div className="row">
                                         <div className="col-lg-4 col-md-5 xs-margin-30px-bottom">
                                             <div className="team-single-img">
-                                                <img src={user?.photo} alt={user?.username}/>
+                                                <img src={user.photo} alt={user.full_name}/>
                                             </div>
                                             <div
                                                 className="bg-light-gray padding-30px-all md-padding-25px-all sm-padding-20px-all text-center">
                                                 <h4 className="margin-10px-bottom font-size24 md-font-size22 sm-font-size20 font-weight-600">
-                                                    {user?.first_name} {user?.last_name}
+                                                    {user.full_name}
                                                 </h4>
                                                 <p className="sm-width-95 sm-margin-auto">
 
@@ -43,22 +86,22 @@ const UserDetail = (props) => {
                                                 <div className="margin-20px-top team-single-icons">
                                                     <ul className="no-margin">
                                                         <li>
-                                                            <a href="javascript:void(0)">
+                                                            <a href="#">
                                                                 <i className="fab fa-facebook-f"/>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:void(0)">
+                                                            <a href="#">
                                                                 <i className="fab fa-twitter"/>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:void(0)">
+                                                            <a href="#">
                                                                 <i className="fab fa-google-plus-g"/>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="javascript:void(0)">
+                                                            <a href="#">
                                                                 <i className="fab fa-instagram"/>
                                                             </a>
                                                         </li>
@@ -70,12 +113,10 @@ const UserDetail = (props) => {
                                         <div className="col-lg-8 col-md-7">
                                             <div className="team-single-text padding-50px-left sm-no-padding-left">
                                                 <h4 className="font-size20 sm-font-size32 xs-font-size30">
-                                                    Software Engineer
+                                                    {user.employee.designation}
                                                 </h4>
                                                 <p className="no-margin-bottom">
-                                                    I am very interested to work as a Software Engineer in a Company where robust problem-solving skills
-                                                    required, following software engineering best practices and culture and provides potential avenues for
-                                                    learning, growing and achieving the top level in the hierarchy of the organization
+                                                    {user.employee.cv.career_objective}
                                                 </p>
                                                 <div className="contact-info-section margin-40px-tb">
                                                     <ul className="list-style9 no-margin">
@@ -83,12 +124,16 @@ const UserDetail = (props) => {
 
                                                             <div className="row">
                                                                 <div className="col-md-5 col-5">
-                                                                    <i className="fas fa-graduation-cap text-orange"/>
+                                                                    <i className="fas fa-graduation-cap"/>
                                                                     <strong
-                                                                        className="margin-10px-left text-orange">Degree:</strong>
+                                                                        className="ml-1">Educations:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
-                                                                    <p>Master's Degrees</p>
+                                                                    {user.employee.educations.map((degree) => {
+                                                                        return <p key={degree.id}> {degree.education_level}
+                                                                            <span className="badge badge-success ml-3">{degree.result}</span>
+                                                                        </p>
+                                                                    })}
                                                                 </div>
                                                             </div>
 
@@ -97,12 +142,22 @@ const UserDetail = (props) => {
 
                                                             <div className="row">
                                                                 <div className="col-md-5 col-5">
-                                                                    <i className="far fa-gem text-yellow"/>
+                                                                    <i className="far fa-gem"/>
                                                                     <strong
-                                                                        className="margin-10px-left text-yellow">Exp.:</strong>
+                                                                        className="ml-1">Experience:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
-                                                                    <p>4 Year in Education</p>
+                                                                    {user.employee.experience.map((e) => {
+                                                                        return <div key={e.id}>
+                                                                            <p>
+                                                                                {e.designation}
+                                                                                <span className="badge badge-dark ml-3">
+                                                                                {e.joined_date} To {e.resign_date}
+                                                                            </span>
+                                                                            </p>
+                                                                            <p>{e.description.length > 200 ? e.description.substring(0, 200) + "..." : e.description}</p>
+                                                                        </div>
+                                                                    })}
                                                                 </div>
                                                             </div>
 
@@ -111,12 +166,23 @@ const UserDetail = (props) => {
 
                                                             <div className="row">
                                                                 <div className="col-md-5 col-5">
-                                                                    <i className="far fa-file text-lightred"/>
+                                                                    <i className="far fa-file"/>
                                                                     <strong
-                                                                        className="margin-10px-left text-lightred">Courses:</strong>
+                                                                        className="ml-1">Training:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
-                                                                    <p>Design Category</p>
+                                                                    <p>{user.employee.trainings.map(e=>{
+                                                                        return <div key={e.id} className={'border-bottom'}>
+                                                                             <p className={'lead'}>
+                                                                                  {e.name}
+                                                                            </p>
+                                                                            <p>
+                                                                                Duration: {e.from_date} To {e.completion_date}
+                                                                            </p>
+                                                                            <p>Organization: {e.organization}</p>
+                                                                            <p>Certificate : {e.certificate}</p>
+                                                                        </div>
+                                                                    })}</p>
                                                                 </div>
                                                             </div>
 
@@ -125,40 +191,42 @@ const UserDetail = (props) => {
 
                                                             <div className="row">
                                                                 <div className="col-md-5 col-5">
-                                                                    <i className="fas fa-map-marker-alt text-green"/>
+                                                                    <i className="fas fa-map-marker-alt"/>
                                                                     <strong
-                                                                        className="margin-10px-left text-green">Address:</strong>
-                                                                </div>
-                                                                <div className="col-md-7 col-7">
-                                                                    <p>Regina ST, London, SK.</p>
-                                                                </div>
-                                                            </div>
-
-                                                        </li>
-                                                        <li>
-
-                                                            <div className="row">
-                                                                <div className="col-md-5 col-5">
-                                                                    <i className="fas fa-mobile-alt text-purple"/>
-                                                                    <strong
-                                                                        className="margin-10px-left xs-margin-four-left text-purple">Phone:</strong>
-                                                                </div>
-                                                                <div className="col-md-7 col-7">
-                                                                    <p>(+44) 123 456 789</p>
-                                                                </div>
-                                                            </div>
-
-                                                        </li>
-                                                        <li>
-                                                            <div className="row">
-                                                                <div className="col-md-5 col-5">
-                                                                    <i className="fas fa-envelope text-pink"/>
-                                                                    <strong
-                                                                        className="margin-10px-left xs-margin-four-left text-pink">Email:</strong>
+                                                                        className="ml-1">Address:</strong>
                                                                 </div>
                                                                 <div className="col-md-7 col-7">
                                                                     <p>
-                                                                        <a href="javascript:void(0)">addyour@emailhere</a>
+                                                                        {user.employee.address.village}, {user.employee.address.upazila}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+                                                        <li>
+
+                                                            <div className="row">
+                                                                <div className="col-md-5 col-5">
+                                                                    <i className="fas fa-mobile-alt"/>
+                                                                    <strong
+                                                                        className="ml-1">Phone:</strong>
+                                                                </div>
+                                                                <div className="col-md-7 col-7">
+                                                                    <p>{user.phone}</p>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+                                                        <li>
+                                                            <div className="row">
+                                                                <div className="col-md-5 col-5">
+                                                                    <i className="fas fa-envelope"/>
+                                                                    <strong
+                                                                        className="ml-1">Email:</strong>
+                                                                </div>
+                                                                <div className="col-md-7 col-7">
+                                                                    <p>
+                                                                        <a href="mailto:">{user.email}</a>
                                                                     </p>
                                                                 </div>
                                                             </div>
