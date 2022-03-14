@@ -43,7 +43,7 @@ const UpdateUser = (props) => {
         formData.append('email', data.email)
         formData.append('phone', data.phone)
         formData.append('gender', data.gender)
-        if (data.photo) formData.append('photo', data.photo[0])
+        if (data.photo && data.photo !== photo) formData.append('photo', data.photo[0])
         try {
             await axios.put(`${process.env.REACT_APP_API_ROOT_V1}user/${props.match.params.id}/`, formData).then(() => {
                 Swal.fire(
